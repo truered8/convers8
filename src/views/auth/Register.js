@@ -33,7 +33,7 @@ export default function Register() {
           console.error("Error adding document: ", error);
           setError(error);
         });
-      history.push("/");
+      history.push("/admin/dashboard");
     } catch (err) {
       console.log(err);
       setError("Error Signing Up: " + err);
