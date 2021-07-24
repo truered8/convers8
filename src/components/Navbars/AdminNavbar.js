@@ -1,6 +1,7 @@
 import React from "react";
 
 import UserDropdown from "components/Dropdowns/UserDropdown.js";
+import UploadButton from "components/Buttons/UploadButton";
 
 export default function Navbar() {
   return (
@@ -31,7 +32,7 @@ export default function Navbar() {
           </form>
           {/* User */}
           <ul className="flex-col md:flex-row list-none items-center hidden md:flex">
-            <UserDropdown />
+            <UploadButton />
           </ul>
         </div>
       </nav>
