@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react";
-import firebase from "firebase";
 import { SymblContext } from "contexts/SymblContext";
 import { useAuth } from "contexts/AuthContext";
+import { db } from "../../firebase";
 
 const request = require("request");
 
@@ -10,7 +10,7 @@ const UploadButton = () => {
   const { currentUser } = useAuth();
 
   const AUDIO_URL =
-    "https://123bien.com/wp-content/uploads/2019/05/call-about-the-job.mp3";
+    "https://123bien.com/wp-content/uploads/2019/05/phone-call-about-work.mp3";
 
   const waitUntilDone = (token, jobId) => {
     const waitUntilDonePromise = (resolve, reject) => {
@@ -31,6 +31,30 @@ const UploadButton = () => {
       );
     };
     return new Promise(waitUntilDonePromise);
+  };
+
+  const uploadData = (
+    conversationId,
+    timeTalk,
+    percentTalk,
+    percentInterrupt,
+    wpm,
+    fillerOccurrence,
+    rating
+  ) => {
+    const newConversation = db
+      .collection("users")
+      .doc(currentUser.email)
+      .collection("conversations")
+      .doc(conversationId);
+    newConversation.set({
+      conversation_id: conversationId,
+      percent_talk: percentTalk,
+      percent_interrupt: percentInterrupt,
+      filler_words: fillerOccurrence,
+      rating: rating,
+      wpm: wpm,
+    });
   };
 
   const FILLERS = ["um", "uh", "like"];
@@ -109,6 +133,15 @@ const UploadButton = () => {
                 if (wpm < 140) score -= (140 - wpm) * 0.5;
                 else if (wpm > 160) score -= (wpm - 160) * 0.5;
                 console.log(`Score: ${score}`);
+                uploadData(
+                  conversationId,
+                  timeTalk,
+                  percentTalk,
+                  percentInterrupt,
+                  wpm,
+                  fillerOccurrence,
+                  score
+                );
               });
           });
         });
