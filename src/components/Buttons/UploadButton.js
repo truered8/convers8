@@ -16,12 +16,13 @@ const UploadButton = () => {
     data.append("file", files[0]);
     data.append("upload_preset", "unsigned");
     setLoading(true);
+
     const res = await fetch("	https://api.cloudinary.com/v1_1/convers8/upload", {
       method: "post",
       body: data,
     });
     const file = await res.json();
-    processConversation(file.secure_url);
+    processConversation(files[0].name, file.secure_url);
 
     setLoading(false);
   };
@@ -55,6 +56,7 @@ const UploadButton = () => {
     percentTalk,
     fillerOccurrence,
     rating,
+    title,
     wpm
   ) => {
     const newConversation = db
@@ -64,19 +66,20 @@ const UploadButton = () => {
       .doc(conversationId);
     newConversation.set({
       recording: audioUrl,
-      average_polarity: averagePolarity,
+      sentiment: averagePolarity,
       conversation_id: conversationId,
       percent_talk: percentTalk,
       percent_interrupt: percentInterrupt,
       filler_words: fillerOccurrence,
       rating: rating,
+      title: title,
       wpm: wpm,
     });
   };
 
   const FILLERS = ["um", "uh", "like"];
 
-  const processConversation = (audioUrl) => {
+  const processConversation = (title, audioUrl) => {
     getToken.then((token) => {
       fetch("https://api.symbl.ai/v1/process/audio/url", {
         method: "POST",
@@ -160,6 +163,7 @@ const UploadButton = () => {
                   percentTalk,
                   fillerOccurrence,
                   score,
+                  title,
                   wpm
                 );
               });

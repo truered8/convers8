@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { withRouter } from "react-router-dom";
+
 import Chart from "chart.js";
 import { db } from "../../firebase";
 import { useAuth } from "../../contexts/AuthContext";
@@ -8,10 +10,14 @@ import PropTypes from "prop-types";
 
 import TableDropdown from "components/Dropdowns/TableDropdown.js";
 
-export default function CardTable({ color }) {
+function CardTable(props, { color }) {
   const { currentUser } = useAuth();
   const [loading, setLoading] = useState(true);
   const [conversationList, setConversationList] = useState([]);
+
+  const onRowClick = (id) => {
+    props.history.push(`/admin/conversation?id=${id}`);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,9 +37,16 @@ export default function CardTable({ color }) {
     fetchData();
   }, []);
 
-  const ConversationRow = ({ title, wpm, sentiment, fillerWords, rating }) => {
+  const ConversationRow = ({
+    id,
+    title,
+    wpm,
+    sentiment,
+    fillerWords,
+    rating,
+  }) => {
     return (
-      <tr>
+      <tr className="cursor-pointer" onClick={() => onRowClick(id)}>
         <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
           <span
             className={
@@ -165,6 +178,7 @@ export default function CardTable({ color }) {
               {conversationList.map(function (doc) {
                 return (
                   <ConversationRow
+                    id={doc.conversation_id}
                     title={doc.title}
                     wpm={doc.wpm}
                     rating={doc.rating}
@@ -188,3 +202,5 @@ CardTable.defaultProps = {
 CardTable.propTypes = {
   color: PropTypes.oneOf(["light", "dark"]),
 };
+
+export default withRouter(CardTable);
