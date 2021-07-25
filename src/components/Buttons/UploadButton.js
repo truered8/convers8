@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import { db } from "../../firebase";
 import { SymblContext } from "contexts/SymblContext";
 import { useAuth } from "contexts/AuthContext";
 import { db } from "../../firebase";
@@ -10,11 +9,8 @@ const UploadButton = () => {
   const { getToken } = useContext(SymblContext);
   const { currentUser } = useAuth();
   const [loading, setLoading] = useState(false);
-  const [AUDIO_URL, setAUDIO_URL] = useState(
-    " https://123bien.com/wp-content/uploads/2019/05/call-about-the-job.mp3"
-  );
 
-  const uploadImage = async (e) => {
+  const onClick = async (e) => {
     const files = e.target.files;
     const data = new FormData();
     data.append("file", files[0]);
@@ -25,25 +21,10 @@ const UploadButton = () => {
       body: data,
     });
     const file = await res.json();
-
-    setAUDIO_URL(file.secure_url);
-
-    const fireData = {
-      recording: file.secure_url,
-    };
-
-    const fireRes = await db
-      .collection("users")
-      .doc(currentUser.email)
-      .collection("conversations")
-      .doc()
-      .set(fireData);
+    processConversation(file.secure_url);
 
     setLoading(false);
   };
-
-  const AUDIO_URL =
-    "https://123bien.com/wp-content/uploads/2019/05/phone-call-about-work.mp3";
 
   const waitUntilDone = (token, jobId) => {
     const waitUntilDonePromise = (resolve, reject) => {
@@ -67,13 +48,14 @@ const UploadButton = () => {
   };
 
   const uploadData = (
+    audioUrl,
+    averagePolarity,
     conversationId,
-    timeTalk,
-    percentTalk,
     percentInterrupt,
-    wpm,
+    percentTalk,
     fillerOccurrence,
-    rating
+    rating,
+    wpm
   ) => {
     const newConversation = db
       .collection("users")
@@ -81,6 +63,8 @@ const UploadButton = () => {
       .collection("conversations")
       .doc(conversationId);
     newConversation.set({
+      recording: audioUrl,
+      average_polarity: averagePolarity,
       conversation_id: conversationId,
       percent_talk: percentTalk,
       percent_interrupt: percentInterrupt,
@@ -92,8 +76,7 @@ const UploadButton = () => {
 
   const FILLERS = ["um", "uh", "like"];
 
-  const onClick = (e) => {
-    e.preventDefault();
+  const processConversation = (audioUrl) => {
     getToken.then((token) => {
       fetch("https://api.symbl.ai/v1/process/audio/url", {
         method: "POST",
@@ -102,7 +85,7 @@ const UploadButton = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          url: AUDIO_URL,
+          url: audioUrl,
         }),
       })
         .then((response) => response.json())
@@ -110,9 +93,10 @@ const UploadButton = () => {
           const conversationId = response["conversationId"]; //6363398028656640
           const jobId = response["jobId"];
           let transcript = "";
+          let averagePolarity = 0;
           waitUntilDone(token, jobId).then(() => {
             fetch(
-              `https://api.symbl.ai/v1/conversations/${conversationId}/messages`,
+              `https://api.symbl.ai/v1/conversations/${conversationId}/messages?sentiment=true`,
               {
                 headers: { Authorization: `Bearer ${token}` },
                 json: true,
@@ -122,7 +106,9 @@ const UploadButton = () => {
               .then((response) => {
                 response["messages"].forEach((message) => {
                   transcript += message["text"] + " ";
+                  averagePolarity += message["sentiment"]["polarity"]["score"];
                 });
+                averagePolarity /= response["messages"].length;
               })
               .then(() => {
                 console.log(transcript);
@@ -162,18 +148,19 @@ const UploadButton = () => {
                 console.log(
                   `Filler Words every 30 Seconds: ${fillerOccurrence}`
                 );
-                const score = 100 - percentInterrupt * 2 - fillerOccurrence;
+                let score = 100 - percentInterrupt * 2 - fillerOccurrence;
                 if (wpm < 140) score -= (140 - wpm) * 0.5;
                 else if (wpm > 160) score -= (wpm - 160) * 0.5;
                 console.log(`Score: ${score}`);
                 uploadData(
+                  audioUrl,
+                  averagePolarity,
                   conversationId,
-                  timeTalk,
-                  percentTalk,
                   percentInterrupt,
-                  wpm,
+                  percentTalk,
                   fillerOccurrence,
-                  score
+                  score,
+                  wpm
                 );
               });
           });
@@ -191,7 +178,7 @@ const UploadButton = () => {
         >
           {loading ? "loading" : "UPLOAD CONVERSATION"}
         </label>
-        <input type="file" id="audio" onChange={uploadImage} hidden />
+        <input type="file" id="audio" onChange={onClick} hidden />
       </div>
     </div>
   );
