@@ -9,6 +9,7 @@ const UploadButton = () => {
   const { getToken } = useContext(SymblContext);
   const { currentUser } = useAuth();
   const [loading, setLoading] = useState(false)
+  const [AUDIO_URL, setAUDIO_URL] = useState(" https://123bien.com/wp-content/uploads/2019/05/call-about-the-job.mp3")
 
   const uploadImage = async e => {
    
@@ -26,11 +27,12 @@ const UploadButton = () => {
     );
     const file = await res.json();
 
-    console.log(file.secure_url);
+    setAUDIO_URL(file.secure_url);
 
     const fireData = {
       recording: file.secure_url
     }
+
 
     const fireRes = await db.collection("users").doc(currentUser.email).collection("conversations").doc().set(fireData);
 
@@ -38,8 +40,7 @@ const UploadButton = () => {
 
 };
 
-  const AUDIO_URL =
-    "https://123bien.com/wp-content/uploads/2019/05/call-about-the-job.mp3";
+
 
   const waitUntilDone = (token, jobId) => {
     const waitUntilDonePromise = (resolve, reject) => {
