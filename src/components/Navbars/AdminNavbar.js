@@ -2,7 +2,6 @@ import React from "react";
 
 import UserDropdown from "components/Dropdowns/UserDropdown.js";
 import UploadButton from "components/Buttons/UploadButton";
-
 import { useAuth } from "../../contexts/AuthContext";
 import { db } from "../../firebase";
 
