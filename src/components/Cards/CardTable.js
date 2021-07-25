@@ -61,7 +61,14 @@ function CardTable(props, { color }) {
           {wpm}
         </td>
         <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-          <i className="fas fa-circle text-orange-500 mr-2"></i> {sentiment}
+          {sentiment >= 0.3 ? (
+            <i className="fa fa-circle text-green-500 mr-3" />
+          ) : sentiment >= -0.3 ? (
+            <i className="fa fa-circle text-yellow-500 mr-3" />
+          ) : (
+            <i className="fa fa-circle text-red-500 mr-3" />
+          )}{" "}
+          {sentiment}
         </td>
 
         <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
@@ -73,7 +80,7 @@ function CardTable(props, { color }) {
             <div className="relative w-full">
               <div className="overflow-hidden h-2 text-xs flex rounded bg-red-200">
                 <div
-                  style={{ width: "60%" }}
+                  style={{ width: rating + "%" }}
                   className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500"
                 ></div>
               </div>
@@ -152,7 +159,7 @@ function CardTable(props, { color }) {
                       : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
                   }
                 >
-                  Filler Words
+                  Filler Words per 30 seconds
                 </th>
                 <th
                   className={

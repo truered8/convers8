@@ -2,10 +2,11 @@ import React, { useContext, useEffect, useState } from "react";
 import { SymblContext } from "contexts/SymblContext";
 import { useAuth } from "contexts/AuthContext";
 import { db } from "../../firebase";
+import { withRouter } from "react-router-dom";
 
 const request = require("request");
 
-const UploadButton = () => {
+const UploadButton = (props) => {
   const { getToken } = useContext(SymblContext);
   const { currentUser } = useAuth();
   const [loading, setLoading] = useState(false);
@@ -23,8 +24,6 @@ const UploadButton = () => {
     });
     const file = await res.json();
     processConversation(files[0].name, file.secure_url);
-
-    setLoading(false);
   };
 
   const waitUntilDone = (token, jobId) => {
@@ -75,6 +74,8 @@ const UploadButton = () => {
       title: title,
       wpm: wpm,
     });
+    setLoading(false);
+    props.history.push(`/admin/conversation?id=${conversationId}`);
   };
 
   const FILLERS = ["um", "uh", "like"];
@@ -188,4 +189,4 @@ const UploadButton = () => {
   );
 };
 
-export default UploadButton;
+export default withRouter(UploadButton);

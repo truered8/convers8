@@ -5,7 +5,6 @@ import React from "react";
 import CardStats from "components/Cards/CardStats.js";
 
 export default function HeaderStats() {
-  
   return (
     <>
       {/* Header */}
@@ -16,12 +15,9 @@ export default function HeaderStats() {
             <div className="flex flex-wrap">
               <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
                 <CardStats
-                  statSubtitle="TRAFFIC"
-                  statTitle="350,897"
-                  statArrow="up"
-                  statPercent="3.48"
-                  statPercentColor="text-emerald-500"
-                  statDescripiron="Since last month"
+                  statSubtitle="Average Speaking Proportion"
+                  statTitle="72%"
+                  statDescripiron="Try talking less and speaking more"
                   statIconName="far fa-chart-bar"
                   statIconColor="bg-red-500"
                 />

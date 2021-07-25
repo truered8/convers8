@@ -16,7 +16,7 @@ export default function Navbar() {
           {/* Brand */}
           <a
             className="text-white text-lg  hidden lg:inline-block font-semibold"
-            href="#pablo"
+            href="/"
             onClick={(e) => e.preventDefault()}
           >
             Convers<span className="text-red-500 font-semibold">8</span>
