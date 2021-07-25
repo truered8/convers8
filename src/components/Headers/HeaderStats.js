@@ -24,24 +24,18 @@ export default function HeaderStats() {
               </div>
               <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
                 <CardStats
-                  statSubtitle="NEW USERS"
-                  statTitle="2,356"
-                  statArrow="down"
-                  statPercent="3.48"
-                  statPercentColor="text-red-500"
-                  statDescripiron="Since last week"
+                  statSubtitle="Average WPM"
+                  statTitle="137"
+                  statDescripiron="Nice! Your speed is optimal."
                   statIconName="fas fa-chart-pie"
                   statIconColor="bg-orange-500"
                 />
               </div>
               <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
                 <CardStats
-                  statSubtitle="SALES"
-                  statTitle="924"
-                  statArrow="down"
-                  statPercent="1.10"
-                  statPercentColor="text-orange-500"
-                  statDescripiron="Since yesterday"
+                  statSubtitle="Average Filler Words per 30 sec"
+                  statTitle="2.15"
+                  statDescripiron="Try slowing down to remove fillers."
                   statIconName="fas fa-users"
                   statIconColor="bg-pink-500"
                 />
@@ -49,11 +43,11 @@ export default function HeaderStats() {
               <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
                 <CardStats
                   statSubtitle="Average Rating"
-                  statTitle="83"
-                  statArrow="up"
-                  statPercent="6"
-                  statPercentColor="text-emerald-500"
-                  statDescripiron="Since last week"
+                  statTitle="88%"
+                  statArrow="down"
+                  statPercent="9%"
+                  statPercentColor="text-red-500"
+                  statDescripiron="Since last week. Keep trying!"
                   statIconName="fas fa-percent"
                   statIconColor="bg-lightBlue-500"
                 />
