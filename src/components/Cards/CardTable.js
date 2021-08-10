@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { withRouter } from "react-router-dom";
 
-import Chart from "chart.js";
 import { db } from "../../firebase";
 import { useAuth } from "../../contexts/AuthContext";
 import PropTypes from "prop-types";

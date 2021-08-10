@@ -3,13 +3,9 @@ import React from "react";
 // components
 
 import CardLineChart from "components/Cards/CardLineChart.js";
-import CardBarChart from "components/Cards/CardBarChart.js";
-import CardPageVisits from "components/Cards/CardPageVisits.js";
-import CardSocialTraffic from "components/Cards/CardSocialTraffic.js";
 import CardTable from "components/Cards/CardTable.js";
 
 import { useAuth } from "../../contexts/AuthContext";
-import { db } from "../../firebase";
 import { Redirect } from "react-router-dom";
 
 export default function Dashboard() {

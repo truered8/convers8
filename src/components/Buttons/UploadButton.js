@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { SymblContext } from "contexts/SymblContext";
 import { useAuth } from "contexts/AuthContext";
 import { db } from "../../firebase";
@@ -36,7 +36,7 @@ const UploadButton = (props) => {
         },
         (err, response, body) => {
           console.log(body["status"]);
-          if (body["status"] == "completed") {
+          if (body["status"] === "completed") {
             resolve();
           } else {
             setTimeout(() => waitUntilDonePromise(resolve, reject), 1000);
@@ -129,13 +129,13 @@ const UploadButton = (props) => {
               .then((response) => response.json())
               .then((responseData) => {
                 const timeTalk = responseData["metrics"].find(
-                  (metric) => metric["type"] == "total_talk_time"
+                  (metric) => metric["type"] === "total_talk_time"
                 )["seconds"];
                 const percentTalk = responseData["metrics"].find(
-                  (metric) => metric["type"] == "total_talk_time"
+                  (metric) => metric["type"] === "total_talk_time"
                 )["percent"];
                 const percentInterrupt = responseData["metrics"].find(
-                  (metric) => metric["type"] == "total_overlap"
+                  (metric) => metric["type"] === "total_overlap"
                 )["percent"];
                 const wpm = responseData["members"][0]["pace"]["wpm"];
                 const fillerOccurrence =

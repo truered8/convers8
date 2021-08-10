@@ -1,18 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useLocation, withRouter } from "react-router-dom";
 
-import Chart from "chart.js";
-import { db } from "../../firebase";
-import { useAuth } from "../../contexts/AuthContext";
 import { SymblContext } from "contexts/SymblContext";
 import PropTypes from "prop-types";
 
-// components
-
-import TableDropdown from "components/Dropdowns/TableDropdown.js";
-
 function CardConversationTable(props, { color }) {
-  const { currentUser } = useAuth();
   const { getToken } = useContext(SymblContext);
   const id = new URLSearchParams(useLocation().search).get("id");
 
