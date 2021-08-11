@@ -99,7 +99,7 @@ export default function HeaderStats() {
                   statPercentColor={`text-${
                     lastAvgPercentTalk < avgPercentTalk ? "green" : "red"
                   }-500`}
-                  statDescripiron="Try talking less and speaking more"
+                  statDescripiron="Since last week"
                   statIconName="far fa-percent"
                   statIconColor="bg-red-500"
                 />
