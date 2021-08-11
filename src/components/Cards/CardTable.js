@@ -40,7 +40,7 @@ function CardTable(props, { color }) {
     id,
     title,
     wpm,
-    sentiment,
+    percentTalk,
     fillerWords,
     rating,
   }) => {
@@ -60,14 +60,14 @@ function CardTable(props, { color }) {
           {wpm}
         </td>
         <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-          {sentiment >= 0.3 ? (
+          {percentTalk >= 60 ? (
             <i className="fa fa-circle text-green-500 mr-3" />
-          ) : sentiment >= -0.3 ? (
+          ) : percentTalk >= 30 ? (
             <i className="fa fa-circle text-yellow-500 mr-3" />
           ) : (
             <i className="fa fa-circle text-red-500 mr-3" />
           )}{" "}
-          {sentiment}
+          {percentTalk}
         </td>
 
         <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
@@ -148,7 +148,7 @@ function CardTable(props, { color }) {
                       : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
                   }
                 >
-                  Sentiment
+                  Percent of Time Talked
                 </th>
                 <th
                   className={
@@ -188,7 +188,7 @@ function CardTable(props, { color }) {
                     title={doc.title}
                     wpm={doc.wpm}
                     rating={doc.rating}
-                    sentiment={doc.sentiment}
+                    percentTalk={doc.percent_talk}
                     fillerWords={doc.filler_words}
                   />
                 );
